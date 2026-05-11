@@ -17,6 +17,9 @@ class PokemonSpecies(db.Model):
     type_2 = db.Column(db.String(10))
     is_base_form = db.Column(db.Boolean, default=True)
     add_date = db.Column(db.Date, default=date.today)
+    abilities = db.relationship('AbilityList', secondary='pokemon_ability', backref='pokemon_species')
+    moves = db.relationship('MoveList', secondary='pokemon_move', backref='pokemon_species')
+    instances = db.relationship('PokemonInstance', backref='species', lazy=True)
     
     def __repr__(self):
         return f"<PokemonSpecies {self.name}>"
@@ -28,6 +31,7 @@ class AbilityList(db.Model):
     name = db.Column(db.String(50), nullable=False)
     description = db.Column(db.String(255))
     add_date = db.Column(db.Date, default=date.today)
+    pokemon_species = db.relationship('PokemonSpecies', secondary='pokemon_ability', backref='abilities')
     
     def __repr__(self):
         return f"<AbilityList {self.name}>"
@@ -55,6 +59,7 @@ class MoveList(db.Model):
     description = db.Column(db.String(255))
     power_points = db.Column(db.Integer)
     add_date = db.Column(db.Date, default=date.today)
+    pokemon_species = db.relationship('PokemonSpecies', secondary='pokemon_move', backref='moves')
     
     def __repr__(self):
         return f"<MoveList {self.name}>"
@@ -78,6 +83,9 @@ class Trainer(db.Model):
     victory_points = db.Column(db.Integer, default=0)
     battle_tickets = db.Column(db.Integer, default=0)
     join_date = db.Column(db.Date, default=date.today)
+    held_items = db.relationship('HeldItem', secondary='trainer_held_item', backref='trainers')
+    pokemon_instances = db.relationship('PokemonInstance', backref='trainer', lazy=True)
+    teams = db.relationship('Team', backref='trainer', lazy=True)
     
     def __repr__(self):
         return f"<Trainer {self.name}>"
@@ -89,6 +97,7 @@ class HeldItem(db.Model):
     name = db.Column(db.String(50), nullable=False)
     description = db.Column(db.String(255))
     add_date = db.Column(db.Date, default=date.today)
+    trainers = db.relationship('Trainer', secondary='trainer_held_item', backref='held_items')
     
     def __repr__(self):
         return f"<HeldItem {self.name}>"
@@ -122,6 +131,8 @@ class PokemonInstance(db.Model):
     move_3 = db.Column(db.String(50), db.ForeignKey('move_list.id'))
     move_4 = db.Column(db.String(50), db.ForeignKey('move_list.id'))
     source = db.Column(db.String(20))
+    species = db.relationship('PokemonSpecies', backref='pokemon_instances')
+    trainer = db.relationship('Trainer', backref='pokemon_instances')
     
     def __repr__(self):
         return f"<PokemonInstance {self.instance_id}>"
@@ -136,6 +147,9 @@ class Team(db.Model):
     pokemon_id = db.Column(db.String(20), db.ForeignKey('pokemon_instance.id'))
     item_id = db.Column(db.String(20), db.ForeignKey('held_item.id'))
     last_updated = db.Column(db.Date, default=date.today)
+    trainer = db.relationship('Trainer', backref='teams')
+    pokemon = db.relationship('PokemonInstance', backref='teams')
+    item = db.relationship('HeldItem', backref='teams')
     
     def __repr__(self):
         return f"<Team {self.trainer_id} - Slot {self.team_slot}>"
