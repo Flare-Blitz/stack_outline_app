@@ -38,6 +38,12 @@ stack_outline_app/
    ```bash
    pip install -r requirements.txt
    ```
+
+3. Insert data.
+   ```bash
+   python seed.py
+   ```
+
 3. Run the app:
    ```bash
    python run.py
