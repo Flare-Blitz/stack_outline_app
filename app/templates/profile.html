@@ -36,13 +36,12 @@
 
 <div>
     <h1>Current Held Items</h1>
-    <button onclick="location.href='user/{{ trainer.id }}/add_item'">Add Held Item</button>
+    <button onclick="location.href='{{ trainer.id }}/itemList'">Add Held Item</button>
     <table>
         <thead>
             <tr>
                 <th>Item:</th>
                 <th>Description:</th>
-                <th>Obtain Date:</th>
             </tr>
         </thead>
         <tbody>
@@ -58,10 +57,10 @@
 
 <div>
     <div>Edit Team</div>
-    <button onclick="location.href='/user/{{ trainer.id }}/editTeam/A'">Edit Team A</button>
-    <button onclick="location.href='/user/{{ trainer.id }}/editTeam/B'">Edit Team B</button>
-    <button onclick="location.href='/user/{{ trainer.id }}/editTeam/C'">Edit Team C</button>
-    <button onclick="location.href='/user/{{ trainer.id }}/editTeam/D'">Edit Team D</button>
-    <button onclick="location.href='/user/{{ trainer.id }}/editTeam/E'">Edit Team E</button>
-    <button onclick="location.href='/user/{{ trainer.id }}/editTeam/F'">Edit Team F</button>
+    <button onclick="location.href='{{ trainer.id }}/editTeam/A'">Edit Team A</button>
+    <button onclick="location.href='{{ trainer.id }}/editTeam/B'">Edit Team B</button>
+    <button onclick="location.href='{{ trainer.id }}/editTeam/C'">Edit Team C</button>
+    <button onclick="location.href='{{ trainer.id }}/editTeam/D'">Edit Team D</button>
+    <button onclick="location.href='{{ trainer.id }}/editTeam/E'">Edit Team E</button>
+    <button onclick="location.href='{{ trainer.id }}/editTeam/F'">Edit Team F</button>
 </div>

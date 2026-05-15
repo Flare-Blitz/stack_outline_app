@@ -67,3 +67,26 @@ def addPokemon(trainer_id, team_slot):
     db.session.commit()
 
     return redirect(f"/user/{trainer_id}/editTeam/{team_slot}")
+
+@main.route("/user/<string:trainer_id>/itemList")
+def addItem(trainer_id):
+    owned_item_ids = [item.id for item in Trainer.query.get(trainer_id).held_items]
+    
+    unowned_items = HeldItem.query.filter(~HeldItem.id.in_(owned_item_ids)).all()
+    return render_template("itemList.html", trainer_id=trainer_id, items=unowned_items)
+
+@main.route("/user/<string:trainer_id>/itemList/addItem", methods=["POST"])
+def addItemPost(trainer_id):
+    item_id = request.form.get("item_id")
+    item = HeldItem.query.get(item_id)
+
+    if not item:
+        return render_template("404.html"), 404
+    
+    trainer = Trainer.query.get(trainer_id)
+
+    if item not in trainer.held_items:
+        trainer.held_items.append(item)
+        db.session.commit()
+
+    return redirect(f"/user/{trainer_id}/itemList")

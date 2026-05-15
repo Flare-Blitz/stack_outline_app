@@ -1,0 +1,24 @@
+<button onclick="location.href='/user/{{ trainer_id }}'">Return to Profile</button>
+<div>
+    <h1>Items to buy</h1>
+    <form action="/user/{{ trainer_id }}/itemList/addItem" method="post">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Buy</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                    <tr>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.description }}</td>
+                        <td><button type="submit" name="item_id" value="{{ item.id }}">Buy</button></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </form>
+</div>
