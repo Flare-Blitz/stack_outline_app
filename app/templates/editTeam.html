@@ -1,0 +1,84 @@
+<div>
+    <h1>Edit Team - Slot {{ team_slot }}</h1>
+    <p>Trainer: {{ trainer.name }}</p>
+
+    {% for number in range(6) %}
+        <div>
+            <h2>Pokemon {{ number + 1 }}</h2>
+            {% set instance = team | selectattr("party_slot", "equalto", number + 1) | first %}
+            {% if instance %}
+                <p>Species: {{ instance.pokemon.species.name }}</p>
+                <p>Item: {{ instance.item.name }}</p>
+                <p>Move 1: {{ instance.pokemon.move1.name }}</p>
+                <p>Move 2: {{ instance.pokemon.move2.name }}</p>
+                <p>Move 3: {{ instance.pokemon.move3.name }}</p>
+                <p>Move 4: {{ instance.pokemon.move4.name }}</p>
+            {% else %}
+                <p>Species: Empty Slot</p>
+                <p>Item: N/A</p>
+                <p>Move 1: N/A</p>
+                <p>Move 2: N/A</p>
+                <p>Move 3: N/A</p>
+                <p>Move 4: N/A</p>
+            {% endif %}
+        </div>
+    {% endfor %}
+
+    <div>
+        <form action="/user/{{ trainer.id }}/editTeam/{{ team_slot }}/addPokemon" method="post">
+            <h2>Your Pokemon</h2>
+            <h3>Slot</h3>
+            <select id="pokemon_slot" name="pokemon_slot">
+                {% for number in range(6) %}
+                    <option value="{{ number + 1 }}">Slot {{ number + 1 }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">Add to Team</button>
+
+            <h3>Choose a pokemon to add</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Species</th>
+                        <th>Move 1</th>
+                        <th>Move 2</th>
+                        <th>Move 3</th>
+                        <th>Move 4</th>
+                        <th>Add to Team</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pokemon in trainer.pokemon_instances %}
+                        <tr>
+                            <td>{{ pokemon.species.name }}</td>
+                            <td>{{ pokemon.move1.name }}</td>
+                            <td>{{ pokemon.move2.name }}</td>
+                            <td>{{ pokemon.move3.name }}</td>
+                            <td>{{ pokemon.move4.name }}</td>
+                            <td><input type="radio" id="pokemon_{{ pokemon.id }}" name="selected_pokemon" value="{{ pokemon.id }}"></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <h3>Select their item</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in trainer.held_items %}
+                        <tr>
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.description }}</td>
+                            <td><input type="radio" id="item_{{ item.id }}" name="selected_item" value="{{ item.id }}"></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </form>
+    </div>
+</div>
