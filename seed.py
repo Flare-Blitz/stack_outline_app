@@ -788,7 +788,7 @@ def seed_database():
                 hp_ev=hp_ev, attack_ev=att_ev, defense_ev=def_ev,
                 special_attack_ev=sp_att_ev, special_defense_ev=sp_def_ev, speed_ev=spd_ev,
                 nature=nature, ability_id=ability_id,
-                move_1=move1, move_2=move2, move_3=move3, move_4=move4,
+                move1_id=move1, move2_id=move2, move3_id=move3, move4_id=move4,
                 source="Pokemon Sword"
             )
             db.session.add(instance)
@@ -798,55 +798,55 @@ def seed_database():
 
         # ===== TEAMS (1+ per trainer with 6 Pokemon each) =====
         teams_data = [
-            ("TE1", "T1", "A", None, "PI1", "I1", date.today() - timedelta(days=7)),
-            ("TE2", "T1", "A", None, "PI3", "I2", date.today() - timedelta(days=7)),
-            ("TE3", "T1", "A", None, "PI5", "I10", date.today() - timedelta(days=7)),
-            ("TE4", "T1", "A", None, "PI7", "I1", date.today() - timedelta(days=7)),
-            ("TE5", "T1", "A", None, "PI9", "I2", date.today() - timedelta(days=7)),
-            ("TE6", "T1", "A", None, "PI11", "I10", date.today() - timedelta(days=7)),
+            ("TE1", "T1", "A", 1, "PI1", "I1", date.today() - timedelta(days=7)),
+            ("TE2", "T1", "A", 2, "PI3", "I2", date.today() - timedelta(days=7)),
+            ("TE3", "T1", "A", 3, "PI5", "I10", date.today() - timedelta(days=7)),
+            ("TE4", "T1", "A", 4, "PI7", "I1", date.today() - timedelta(days=7)),
+            ("TE5", "T1", "A", 5, "PI9", "I2", date.today() - timedelta(days=7)),
+            ("TE6", "T1", "A", 6, "PI11", "I10", date.today() - timedelta(days=7)),
             
-            ("TE7", "T2", "A", None, "PI2", "I3", date.today() - timedelta(days=14)),
-            ("TE8", "T2", "A", None, "PI4", "I10", date.today() - timedelta(days=14)),
-            ("TE9", "T2", "A", None, "PI6", "I3", date.today() - timedelta(days=14)),
-            ("TE10", "T2", "A", None, "PI8", "I10", date.today() - timedelta(days=14)),
-            ("TE11", "T2", "A", None, "PI10", "I7", date.today() - timedelta(days=14)),
-            ("TE12", "T2", "A", None, "PI12", "I3", date.today() - timedelta(days=14)),
+            ("TE7", "T2", "A", 1, "PI2", "I3", date.today() - timedelta(days=14)),
+            ("TE8", "T2", "A", 2, "PI4", "I10", date.today() - timedelta(days=14)),
+            ("TE9", "T2", "A", 3, "PI6", "I3", date.today() - timedelta(days=14)),
+            ("TE10", "T2", "A", 4, "PI8", "I10", date.today() - timedelta(days=14)),
+            ("TE11", "T2", "A", 5, "PI10", "I7", date.today() - timedelta(days=14)),
+            ("TE12", "T2", "A", 6, "PI12", "I3", date.today() - timedelta(days=14)),
             
-            ("TE13", "T3", "A", None, "PI13", "I4", date.today() - timedelta(days=5)),
-            ("TE14", "T3", "A", None, "PI15", "I5", date.today() - timedelta(days=5)),
-            ("TE15", "T3", "A", None, "PI17", "I4", date.today() - timedelta(days=5)),
-            ("TE16", "T3", "A", None, "PI19", "I5", date.today() - timedelta(days=5)),
-            ("TE17", "T3", "A", None, "PI21", "I4", date.today() - timedelta(days=5)),
-            ("TE18", "T3", "A", None, "PI23", "I5", date.today() - timedelta(days=5)),
+            ("TE13", "T3", "A", 1, "PI13", "I4", date.today() - timedelta(days=5)),
+            ("TE14", "T3", "A", 2, "PI15", "I5", date.today() - timedelta(days=5)),
+            ("TE15", "T3", "A", 3, "PI17", "I4", date.today() - timedelta(days=5)),
+            ("TE16", "T3", "A", 4, "PI19", "I5", date.today() - timedelta(days=5)),
+            ("TE17", "T3", "A", 5, "PI21", "I4", date.today() - timedelta(days=5)),
+            ("TE18", "T3", "A", 6, "PI23", "I5", date.today() - timedelta(days=5)),
             
-            ("TE19", "T4", "A", None, "PI14", "I2", date.today() - timedelta(days=10)),
-            ("TE20", "T4", "A", None, "PI16", "I7", date.today() - timedelta(days=10)),
-            ("TE21", "T4", "A", None, "PI18", "I2", date.today() - timedelta(days=10)),
-            ("TE22", "T4", "A", None, "PI20", "I7", date.today() - timedelta(days=10)),
-            ("TE23", "T4", "A", None, "PI22", "I2", date.today() - timedelta(days=10)),
-            ("TE24", "T4", "A", None, "PI24", "I7", date.today() - timedelta(days=10)),
+            ("TE19", "T4", "A", 1, "PI14", "I2", date.today() - timedelta(days=10)),
+            ("TE20", "T4", "A", 2, "PI16", "I7", date.today() - timedelta(days=10)),
+            ("TE21", "T4", "A", 3, "PI18", "I2", date.today() - timedelta(days=10)),
+            ("TE22", "T4", "A", 4, "PI20", "I7", date.today() - timedelta(days=10)),
+            ("TE23", "T4", "A", 5, "PI22", "I2", date.today() - timedelta(days=10)),
+            ("TE24", "T4", "A", 6, "PI24", "I7", date.today() - timedelta(days=10)),
             
-            ("TE25", "T5", "A", None, "PI25", "I1", date.today() - timedelta(days=3)),
-            ("TE26", "T5", "A", None, "PI27", "I10", date.today() - timedelta(days=3)),
-            ("TE27", "T5", "A", None, "PI29", "I1", date.today() - timedelta(days=3)),
-            ("TE28", "T5", "A", None, "PI31", "I10", date.today() - timedelta(days=3)),
-            ("TE29", "T5", "A", None, "PI33", "I1", date.today() - timedelta(days=3)),
-            ("TE30", "T5", "A", None, "PI35", "I10", date.today() - timedelta(days=3)),
+            ("TE25", "T5", "A", 1, "PI25", "I1", date.today() - timedelta(days=3)),
+            ("TE26", "T5", "A", 2, "PI27", "I10", date.today() - timedelta(days=3)),
+            ("TE27", "T5", "A", 3, "PI29", "I1", date.today() - timedelta(days=3)),
+            ("TE28", "T5", "A", 4, "PI31", "I10", date.today() - timedelta(days=3)),
+            ("TE29", "T5", "A", 5, "PI33", "I1", date.today() - timedelta(days=3)),
+            ("TE30", "T5", "A", 6, "PI35", "I10", date.today() - timedelta(days=3)),
             
             # Teams with Palafin (base form only)
-            ("TE31", "T6", "B", None, "PI103", "I10", date.today() - timedelta(days=2)),  # Palafin Zero
-            ("TE32", "T6", "B", None, "PI104", "I10", date.today() - timedelta(days=2)),  # Palafin Zero
-            ("TE33", "T6", "B", None, "PI37", "I1", date.today() - timedelta(days=2)),
-            ("TE34", "T6", "B", None, "PI39", "I10", date.today() - timedelta(days=2)),
-            ("TE35", "T6", "B", None, "PI41", "I1", date.today() - timedelta(days=2)),
-            ("TE36", "T6", "B", None, "PI43", "I10", date.today() - timedelta(days=2)),
+            ("TE31", "T6", "A", 1, "PI103", "I10", date.today() - timedelta(days=2)),  # Palafin Zero
+            ("TE32", "T6", "A", 2, "PI104", "I10", date.today() - timedelta(days=2)),  # Palafin Zero
+            ("TE33", "T6", "A", 3, "PI37", "I1", date.today() - timedelta(days=2)),
+            ("TE34", "T6", "A", 4, "PI39", "I10", date.today() - timedelta(days=2)),
+            ("TE35", "T6", "A", 5, "PI41", "I1", date.today() - timedelta(days=2)),
+            ("TE36", "T6", "A", 6, "PI43", "I10", date.today() - timedelta(days=2)),
             
-            ("TE37", "T7", "B", None, "PI45", "I1", date.today() - timedelta(days=1)),
-            ("TE38", "T7", "B", None, "PI47", "I10", date.today() - timedelta(days=1)),
-            ("TE39", "T7", "B", None, "PI49", "I1", date.today() - timedelta(days=1)),
-            ("TE40", "T7", "B", None, "PI51", "I10", date.today() - timedelta(days=1)),
-            ("TE41", "T7", "B", None, "PI53", "I1", date.today() - timedelta(days=1)),
-            ("TE42", "T7", "B", None, "PI55", "I10", date.today() - timedelta(days=1)),
+            ("TE37", "T7", "A", 1, "PI45", "I1", date.today() - timedelta(days=1)),
+            ("TE38", "T7", "A", 2, "PI47", "I10", date.today() - timedelta(days=1)),
+            ("TE39", "T7", "A", 3, "PI49", "I1", date.today() - timedelta(days=1)),
+            ("TE40", "T7", "A", 4, "PI51", "I10", date.today() - timedelta(days=1)),
+            ("TE41", "T7", "A", 5, "PI53", "I1", date.today() - timedelta(days=1)),
+            ("TE42", "T7", "A", 6, "PI55", "I10", date.today() - timedelta(days=1)),
         ]
         
         for team_id, trainer_id, team_slot, party_slot, pokemon_id, item_id, last_updated in teams_data:

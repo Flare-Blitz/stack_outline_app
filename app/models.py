@@ -125,14 +125,18 @@ class PokemonInstance(db.Model):
     speed_ev = db.Column(db.Integer, default=0)
     nature = db.Column(db.String(50))
     ability_id = db.Column(db.String(50), db.ForeignKey('ability_list.id'))
-    move_1 = db.Column(db.String(50), db.ForeignKey('move_list.id'))
-    move_2 = db.Column(db.String(50), db.ForeignKey('move_list.id'))
-    move_3 = db.Column(db.String(50), db.ForeignKey('move_list.id'))
-    move_4 = db.Column(db.String(50), db.ForeignKey('move_list.id'))
+    move1_id = db.Column(db.String(50), db.ForeignKey('move_list.id'))
+    move2_id = db.Column(db.String(50), db.ForeignKey('move_list.id'))
+    move3_id = db.Column(db.String(50), db.ForeignKey('move_list.id'))
+    move4_id = db.Column(db.String(50), db.ForeignKey('move_list.id'))
     source = db.Column(db.String(20))
     species = db.relationship('PokemonSpecies', back_populates='instances')
     trainer = db.relationship('Trainer', back_populates='pokemon_instances')
     teams = db.relationship('Team', back_populates='pokemon', lazy=True)
+    move1 = db.relationship('MoveList', foreign_keys=[move1_id])
+    move2 = db.relationship('MoveList', foreign_keys=[move2_id])
+    move3 = db.relationship('MoveList', foreign_keys=[move3_id])
+    move4 = db.relationship('MoveList', foreign_keys=[move4_id])
 
     def __repr__(self):
         return f"<PokemonInstance {self.instance_id}>"
