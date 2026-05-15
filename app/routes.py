@@ -90,3 +90,28 @@ def addItemPost(trainer_id):
         db.session.commit()
 
     return redirect(f"/user/{trainer_id}/itemList")
+
+@main.route("/user/<string:trainer_id>/itemList/deleteItem", methods=["POST"])
+def deleteItemPost(trainer_id):
+    item_id = request.form.get("item_id")
+    item = HeldItem.query.get(item_id)
+
+    if not item:
+        return render_template("404.html"), 404
+    
+    trainer = Trainer.query.get(trainer_id)
+
+    #Remove the item from the trainer's held items if it exists
+    if item in trainer.held_items:
+        trainer.held_items.remove(item)
+        db.session.commit()
+
+    #Remove the item from all pokemon in the trainer's team if it is currently assigned
+    teams_with_item = Team.query.filter_by(trainer_id=trainer_id, item_id=item_id).all()
+    for team in teams_with_item:
+        team.item_id = None
+        team.last_updated = date.today()
+
+    db.session.commit()
+
+    return redirect(f"/user/{trainer_id}")
