@@ -1,0 +1,67 @@
+<button onclick="location.href='/'">Return to Home</button>
+<div>
+    <p>{{trainer.name}}</p>
+    <p>{{trainer.victory_points}}</p>
+    <p>{{trainer.battle_tickets}}</p>
+</div>
+
+<div>
+    <div>Pokemon List</div>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Move 1</th>
+                <th>Move 2</th>
+                <th>Move 3</th>
+                <th>Move 4</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pokemon in trainer.pokemon_instances %}
+                <tr>
+                    <td>{{ pokemon.species.name }}</td>
+                    <td>{{ pokemon.move1.name }}</td>
+                    <td>{{ pokemon.move2.name }}</td>
+                    <td>{{ pokemon.move3.name }}</td>
+                    <td>{{ pokemon.move4.name }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% for pokemon in trainer.pokemon_instances %}
+        
+    {% endfor %}
+</div>
+
+<div>
+    <h1>Current Held Items</h1>
+    <button onclick="location.href='user/{{ trainer.id }}/add_item'">Add Held Item</button>
+    <table>
+        <thead>
+            <tr>
+                <th>Item:</th>
+                <th>Description:</th>
+                <th>Obtain Date:</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in trainer.held_items %}
+                <tr>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.description }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <div>Edit Team</div>
+    <button onclick="location.href='/user/{{ trainer.id }}/edit_team/A'">Edit Team A</button>
+    <button onclick="location.href='/user/{{ trainer.id }}/edit_team/B'">Edit Team B</button>
+    <button onclick="location.href='/user/{{ trainer.id }}/edit_team/C'">Edit Team C</button>
+    <button onclick="location.href='/user/{{ trainer.id }}/edit_team/D'">Edit Team D</button>
+    <button onclick="location.href='/user/{{ trainer.id }}/edit_team/E'">Edit Team E</button>
+    <button onclick="location.href='/user/{{ trainer.id }}/edit_team/F'">Edit Team F</button>
+</div>
