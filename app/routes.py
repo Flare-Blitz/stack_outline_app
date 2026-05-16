@@ -16,7 +16,8 @@ def index():
 
     trainerCount = Trainer.query.count()
     pokemonCount = PokemonSpecies.query.count()
-    return render_template("index.html", trainers=trainers, trainerCount=trainerCount, pokemonCount=pokemonCount)
+    AveragePokemonBST = db.session.query(db.func.avg(PokemonSpecies.hp + PokemonSpecies.attack + PokemonSpecies.defense + PokemonSpecies.special_attack + PokemonSpecies.special_defense + PokemonSpecies.speed)).scalar()
+    return render_template("index.html", trainers=trainers, trainerCount=trainerCount, pokemonCount=pokemonCount, AveragePokemonBST=AveragePokemonBST)
 
 @main.route("/user/<string:trainer_id>")
 def user(trainer_id):
