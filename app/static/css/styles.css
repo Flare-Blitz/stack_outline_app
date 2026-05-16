@@ -1,3 +1,681 @@
-body {
-  background: #f8f9fa;
+/* --- Variables & Core Theme --- */
+:root {
+    --primary-red: #cc0000;
+    --dark-red: #8b0000;
+    --gold: #ffd700;
+    --dark-gold: #b8860b;
+    --bg-dark: #121214;
+    --bg-card: #1e1e24;
+    --text-light: #f5f5f5;
+    --text-muted: #a0a0a5;
+    --text-dark: #333;
+}
+
+/* --- user Header --- */
+.user-section {
+    background: linear-gradient(135deg, var(--dark-red) 0%, var(--bg-dark) 100%);
+    border-left: 5px solid var(--gold);
+    padding: 2.5rem 2rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.champions-title {
+    color: var(--gold);
+    font-size: 2.5rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 0.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.user-subtitle {
+    color: var(--text-light);
+    font-size: 1.1rem;
+    font-weight: 300;
+}
+
+/* --- Statistics Row --- */
+.stats-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.stat-card {
+    background: var(--bg-card);
+    border: 1px solid rgba(255, 215, 0, 0.1);
+    border-radius: 8px;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.stat-value {
+    display: block;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary-red);
+    line-height: 1;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* --- Trainer Selection Grid --- */
+.section-heading {
+    color: var(--text-light);
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding-bottom: 0.5rem;
+}
+
+.section-heading::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: var(--gold);
+}
+
+.trainer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.trainer-card {
+    background: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 1.75rem 1rem;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+/* Red/Gold highlight accent on hover */
+.trainer-card-accent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--primary-red);
+    transition: background 0.2s ease;
+}
+
+.trainer-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(204, 0, 0, 0.2);
+    border-color: var(--gold);
+}
+
+.trainer-card:hover .trainer-card-accent {
+    background: var(--gold);
+}
+
+/* Casual avatar circle icon using user's initial */
+.trainer-avatar {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--primary-red), var(--dark-red));
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.avatar-initial {
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.trainer-name {
+    color: var(--text-light);
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.view-profile-btn {
+    display: inline-block;
+    padding: 0.4rem 1rem;
+    font-size: 0.85rem;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    border-radius: 20px;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.trainer-card:hover .view-profile-btn {
+    background-color: var(--gold);
+    color: #000;
+    font-weight: 600;
+}
+
+/* --- Empty State Configuration --- */
+.empty-state-alert {
+    background: #241414;
+    border: 1px dashed var(--primary-red);
+    padding: 2rem;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.alert-text {
+    color: var(--text-light);
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.alert-subtext {
+    color: var(--text-muted);
+}
+
+/* --- Global Body Overrides --- */
+.site-body {
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- Premium Arena Navbar --- */
+.arena-navbar {
+    background-color: #0a0a0c;
+    border-bottom: 2px solid var(--gold);
+    padding: 1rem 0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.arena-brand {
+    font-weight: 900;
+    font-size: 1.4rem;
+    letter-spacing: 1.5px;
+    color: var(--text-light) !important;
+    text-transform: uppercase;
+    transition: text-shadow 0.2s ease;
+}
+
+.arena-brand:hover {
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+}
+
+.brand-accent {
+    color: var(--primary-red);
+}
+
+/* --- Navigation Links --- */
+.arena-link {
+    color: var(--text-muted) !important;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    padding: 0.5rem 1rem !important;
+    transition: color 0.2s ease, border-color 0.2s ease;
+    border-bottom: 2px solid transparent;
+}
+
+.arena-link:hover, 
+.arena-link.active {
+    color: var(--gold) !important;
+    border-bottom: 2px solid var(--primary-red);
+}
+
+/* --- Mobile Menu Responsive Adjustments --- */
+.custom-toggler {
+    border-color: rgba(255, 215, 0, 0.2) !important;
+}
+
+.custom-toggler:focus {
+    box-shadow: 0 0 0 0.25rem rgba(204, 0, 0, 0.25) !important;
+}
+
+.custom-toggler .navbar-toggler-icon {
+    /* Converts the hamburger icon lines to look gold */
+    filter: invert(84%) sepia(79%) saturate(417%) hue-rotate(354deg) brightness(107%) contrast(104%);
+}
+
+/* --- Structural Content Stage --- */
+.stage-container {
+    flex: 1; /* Pushes footer elements down if content is short */
+    animation: fadeInPage 0.4s ease-in-out;
+}
+
+/* Smooth page load effect */
+@keyframes fadeInPage {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- Master Layout Framework --- */
+.profile-layout-grid {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+@media (max-width: 992px) {
+    .profile-layout-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* --- Navigation & Secondary Buttons --- */
+.back-league-btn {
+    color: var(--gold);
+    text-decoration: none;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    transition: color 0.2s;
+}
+.back-league-btn:hover {
+    color: #fff;
+}
+
+/* --- Left Profile Identity Pass --- */
+.trainer-identity-sidebar {
+    background: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+.identity-card-accent {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 5px;
+    background: linear-gradient(90deg, var(--primary-red), var(--gold));
+}
+.profile-avatar-large {
+    width: 90px; height: 90px;
+    background: linear-gradient(135deg, #1f1f23, #0f0f12);
+    border: 3px solid var(--gold);
+    border-radius: 50%;
+    margin: 0.5rem auto 1.5rem;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+}
+.avatar-text-large { color: var(--gold); font-size: 2.5rem; font-weight: 800; }
+.profile-trainer-name { color: #fff; font-size: 1.6rem; font-weight: 700; margin-bottom: 0.2rem; }
+.profile-trainer-rank { color: var(--primary-red); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; }
+.profile-divider { border-top: 1px solid rgba(255, 255, 255, 0.1); margin: 1.5rem 0; }
+
+/* Currency Values */
+.value-highlight { color: #ff4d4d; font-weight: 700; font-size: 1.1rem; }
+.value-highlight-gold { color: var(--gold); font-weight: 700; font-size: 1.1rem; }
+
+/* Squad Team Selector Matrix */
+.panel-subheading { color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; text-align: left; }
+.squad-btn-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+.squad-select-btn {
+    background: #141418; border: 1px solid rgba(255,255,255,0.1); color: #fff;
+    padding: 0.6rem 0.25rem; font-size: 0.8rem; font-weight: 600; border-radius: 6px;
+    transition: all 0.2s ease;
+}
+.squad-select-btn:hover {
+    background: var(--primary-red); border-color: var(--gold); color: #fff; transform: scale(1.05);
+}
+
+/* --- Right Column: Pokémon Roster Grid --- */
+.pokemon-roster-grid-advanced {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+}
+.pokemon-instance-card {
+    background: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 10px; padding: 1.25rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+.instance-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+.instance-species-name { color: #fff; font-size: 1.25rem; font-weight: 700; margin: 0; }
+.instance-nature-badge { background: rgba(255, 215, 0, 0.1); color: var(--gold); border: 1px solid var(--gold); font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 20px; font-weight: 600; }
+
+/* Moveset Modules */
+.instance-moveset-box { background: #141418; padding: 0.75rem; border-radius: 6px; margin-bottom: 1rem; }
+.moveset-title, .ev-title { display: block; font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 1px; margin-bottom: 0.5rem; font-weight: 600; }
+.moves-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; }
+.move-slot { background: #1e1e24; border-left: 3px solid var(--primary-red); padding: 0.4rem; font-size: 0.8rem; color: #fff; border-radius: 2px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;}
+
+/* EV Horizontal Layout modules */
+.ev-stat-bars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; background: #141418; padding: 0.75rem; border-radius: 6px; }
+.ev-stat-row { display: flex; flex-direction: column; text-align: center; font-size: 0.75rem; background: #1e1e24; padding: 0.25rem; border-radius: 4px; border-bottom: 1px solid rgba(255,255,255,0.02);}
+.ev-stat-row span { color: var(--text-muted); font-size: 0.65rem; }
+.ev-stat-row strong { color: #fff; font-size: 0.85rem; margin-top: 0.1rem; }
+
+/* --- Tabular Held Items Display Vault --- */
+.action-btn-gold-sm {
+    background: transparent; border: 1px solid var(--gold); color: var(--gold);
+    font-size: 0.8rem; font-weight: 600; padding: 0.4rem 1rem; border-radius: 4px; text-transform: uppercase; transition: all 0.2s;
+}
+.action-btn-gold-sm:hover { background: var(--gold); color: #000; }
+.arena-table-responsive { background: var(--bg-card); border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); }
+.arena-data-table { width: 100%; border-collapse: collapse; margin: 0; }
+.arena-data-table th { background: #141418; color: var(--gold); text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; padding: 1rem; font-weight: 700; border-bottom: 2px solid var(--primary-red); }
+.arena-data-table td { padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); vertical-align: middle; font-size: 0.9rem; }
+.item-highlight-cell { color: #fff; font-weight: 600; }
+.arena-delete-btn { background: transparent; border: 1px solid var(--primary-red); color: var(--primary-red); font-size: 0.75rem; padding: 0.25rem 0.75rem; border-radius: 4px; transition: all 0.2s; }
+.arena-delete-btn:hover { background: var(--primary-red); color: #fff; }
+
+/* --- Pokémon Ability Styling Accent --- */
+.instance-ability-text {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-top: 0.2rem;
+}
+
+/* --- Interactive EV Graph Systems --- */
+.ev-graph-matrix {
+    background: #141418;
+    padding: 1rem;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+}
+
+.ev-graph-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.ev-graph-label {
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: var(--text-muted);
+    width: 30px; /* Aligns all bars exactly at the same starting coordinate */
+    text-align: left;
+}
+
+/* Base structural running lane track */
+.ev-bar-track {
+    flex: 1;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.02);
+}
+
+/* Interactive Fill Logic Engine (Calculated off max potential value: 30) */
+.ev-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    /* Math rule mapping absolute values cleanly to percentages */
+    width: calc((var(--ev-val) / 30) * 100%);
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Distinctive competitive color designations for key attributes */
+.fill-hp  { background: #ff4d4d; box-shadow: 0 0 6px rgba(255, 77, 77, 0.4); }
+.fill-atk { background: #f0a038; box-shadow: 0 0 6px rgba(240, 160, 56, 0.4); }
+.fill-def { background: #f8d030; box-shadow: 0 0 6px rgba(248, 208, 48, 0.4); }
+.fill-spa { background: #35a0f0; box-shadow: 0 0 6px rgba(53, 160, 240, 0.4); }
+.fill-spd { background: #78c850; box-shadow: 0 0 6px rgba(120, 200, 80, 0.4); }
+.fill-spe { background: #f85888; box-shadow: 0 0 6px rgba(248, 88, 136, 0.4); }
+
+/* Exact numeric indicators pushed right */
+.ev-graph-numeric {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #fff;
+    width: 20px;
+    text-align: right;
+}
+
+/* --- Shop Market Header Banner --- */
+.market-header {
+    background: linear-gradient(135deg, #1e1e24 0%, #0a0a0c 100%);
+    border-bottom: 3px solid var(--primary-red);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.market-title {
+    color: var(--gold);
+    font-size: 2.2rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 0.25rem;
+}
+
+.market-subtitle {
+    color: var(--text-muted);
+    font-size: 1rem;
+    font-weight: 400;
+    margin: 0;
+}
+
+/* --- Marketplace Item Grid System --- */
+.market-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.market-item-card {
+    background: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Accent highlight back-layer */
+.item-card-glow {
+    position: absolute;
+    top: 0; left: 0; width: 4px; height: 100%;
+    background: var(--gold);
+    transition: width 0.2s ease;
+    opacity: 0.7;
+}
+
+.market-item-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(255, 215, 0, 0.3);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+}
+
+.market-item-card:hover .item-card-glow {
+    width: 6px;
+    background: var(--primary-red);
+}
+
+/* Item Visual Box Placement */
+.item-sprite-box {
+    width: 50px;
+    height: 50px;
+    background: #141418;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.25rem;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.item-sphere {
+    font-size: 1.5rem;
+}
+
+/* Item Details Typography */
+.item-name-tag {
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.item-desc-text {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+}
+
+/* Purchase Action Components */
+.market-buy-btn {
+    width: 100%;
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 0.6rem 1rem;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 6px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.market-buy-btn:hover {
+    background: linear-gradient(135deg, var(--gold) 0%, var(--dark-gold) 100%);
+    color: #000;
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.3);
+    transform: scale(1.02);
+}
+
+.market-buy-btn:active {
+    transform: scale(0.98);
+}
+
+/* --- Teambuilder Header Area --- */
+.team-edit-header {
+    background: linear-gradient(135deg, #141418 0%, var(--bg-card) 100%);
+    border-left: 5px solid var(--primary-red);
+    padding: 1.5rem 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+.badge-slot {
+    display: inline-block;
+    background: var(--primary-red);
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+    letter-spacing: 1px;
+}
+
+/* --- Team Roster View Slot Cards Grid --- */
+.teambuilder-party-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.25rem;
+}
+.party-slot-card {
+    background: var(--bg-card);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 10px;
+    padding: 1.25rem;
+    position: relative;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+.slot-number-badge {
+    position: absolute;
+    top: 1rem; right: 1rem;
+    font-size: 0.7rem; font-weight: 800;
+    color: var(--gold); background: #141418;
+    padding: 0.15rem 0.5rem; border-radius: 4px; border: 1px solid rgba(255,215,0,0.2);
+}
+.slot-poke-name { color: #fff; font-size: 1.2rem; font-weight: 700; margin: 0 0 0.25rem 0; }
+.slot-item-tag { font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 0.75rem; }
+
+/* Mini Base Stats Panel Row */
+.slot-base-stats {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0.25rem; background: #141418;
+    padding: 0.5rem; border-radius: 6px; margin-bottom: 0.75rem;
+}
+.mini-stat { display: flex; flex-direction: column; text-align: center; font-size: 0.65rem; }
+.mini-stat span { color: var(--text-muted); font-weight: 600; font-size: 0.55rem; }
+.mini-stat strong { color: var(--gold); margin-top: 0.1rem; }
+
+/* Moves list preview row inside card */
+.slot-moves-list { display: grid; grid-template-columns: 1fr 1fr; gap: 0.35rem; }
+.mini-move { background: rgba(255,255,255,0.03); color: #fff; font-size: 0.7rem; padding: 0.25rem 0.5rem; border-radius: 4px; border-left: 2px solid var(--primary-red); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Empty state party card variations */
+.slot-empty { border: 2px dashed rgba(255,255,255,0.05); background: transparent; display: flex; align-items: center; justify-content: center; height: 165px; }
+.empty-slot-placeholder { text-align: center; color: rgba(255,255,255,0.25); }
+.placeholder-icon { font-size: 1.75rem; margin-bottom: 0.25rem; }
+
+/* --- Deployment & Workspace Selection Boards --- */
+.console-action-bar {
+    background: #141418; border: 1px solid var(--gold); border-radius: 8px;
+    padding: 1rem 1.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+}
+.console-label { color: #fff; font-weight: 600; font-size: 0.9rem; }
+.arena-dropdown-select { background: var(--bg-card); color: #fff; border: 1px solid rgba(255,255,255,0.2); padding: 0.4rem 1rem; border-radius: 6px; font-weight: 600; cursor: pointer; }
+.arena-dropdown-select:focus { border-color: var(--gold); outline: none; }
+.arena-commit-btn { background: var(--primary-red); border: 1px solid var(--gold); color: #fff; font-weight: 700; text-transform: uppercase; font-size: 0.85rem; padding: 0.5rem 1.5rem; border-radius: 6px; letter-spacing: 0.5px; transition: all 0.2s; }
+.arena-commit-btn:hover { background: #ff1a1a; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(204,0,0,0.3); }
+
+/* Double Panel Splitter Layout */
+.selection-split-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+@media (max-width: 992px) { .selection-split-grid { grid-template-columns: 1fr; } }
+.selection-panel-box { background: var(--bg-card); border-radius: 10px; padding: 1.25rem; border: 1px solid rgba(255,255,255,0.03); }
+.selector-scroll-box { max-height: 400px; overflow-y: auto; border-radius: 6px; }
+
+/* Interactive Table Select Row Overrides */
+.table-interactive tbody tr { cursor: pointer; transition: background 0.15s; }
+.table-interactive tbody tr:hover { background: rgba(255,215,0,0.03) !important; }
+.table-moves-snippet { font-size: 0.75rem; color: var(--text-muted); }
+.table-moves-snippet span { color: #ddd; }
+
+/* Radio Button Form Uniform Accent styling */
+.arena-radio-input {
+    accent-color: var(--primary-red);
+    transform: scale(1.15);
+    cursor: pointer;
 }

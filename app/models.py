@@ -1,6 +1,56 @@
 from .extensions import db
 from datetime import date
 
+#Helper tables go here:
+    
+class Pokemon_Ability(db.Model):
+    """Many-to-many relationship between Pokemon species and abilities."""
+    __tablename__ = 'pokemon_ability'
+    species_id = db.Column(db.String(20), db.ForeignKey('pokemon_species.id'), primary_key=True)
+    ability_id = db.Column(db.String(20), db.ForeignKey('ability_list.id'), primary_key=True)
+    add_date = db.Column(db.Date, default=date.today)
+    
+    def __repr__(self):
+        return f"<Pokemon_Ability {self.species_id} - {self.ability_id}>"
+
+class Trainer_HeldItem(db.Model):
+    """Many-to-many relationship between trainers and held items."""
+    trainer_id = db.Column(db.String(20), db.ForeignKey('trainer.id'), primary_key=True)
+    item_id = db.Column(db.String(20), db.ForeignKey('held_item.id'), primary_key=True)
+    obtain_date = db.Column(db.Date, default=date.today)
+    
+    def __repr__(self):
+        return f"<Trainer_HeldItem {self.trainer_id} - {self.item_id}>"
+    
+class Pokemon_Move(db.Model):
+    """Many-to-many relationship between Pokemon species and moves."""
+    __tablename__ = 'pokemon_move'
+    species_id = db.Column(db.String(20), db.ForeignKey('pokemon_species.id'), primary_key=True)
+    move_id = db.Column(db.String(20), db.ForeignKey('move_list.id'), primary_key=True)
+    add_date = db.Column(db.Date, default=date.today)
+    
+    def __repr__(self):
+        return f"<Pokemon_Move {self.species_id} - {self.move_id}>"
+    
+class Nature(db.Model):
+    """List of Pokemon natures with their stat effects."""
+    id = db.Column(db.String(20), primary_key=True)
+    name = db.Column(db.String(50), nullable=False)
+    increased_stat = db.Column(db.String(20))
+    decreased_stat = db.Column(db.String(20))
+    add_date = db.Column(db.Date, default=date.today)
+    instances = db.relationship('PokemonInstance', back_populates='nature', lazy=True)
+    
+    def __repr__(self):
+        return f"<Nature {self.name}>"
+    
+class Type(db.Model):
+    """List of Pokemon types with their strengths and weaknesses."""
+    name = db.Column(db.String(50), primary_key=True)
+    add_date = db.Column(db.Date, default=date.today)
+    
+    def __repr__(self):
+        return f"<Type {self.name}>"
 
 class PokemonSpecies(db.Model):
     """Base Pokemon species table with stats and type information."""
@@ -13,35 +63,28 @@ class PokemonSpecies(db.Model):
     special_attack = db.Column(db.Integer, nullable=False)
     special_defense = db.Column(db.Integer, nullable=False)
     speed = db.Column(db.Integer, nullable=False)
-    type_1 = db.Column(db.String(10))
-    type_2 = db.Column(db.String(10))
+    type1 = db.Column(db.String(20), db.ForeignKey('type.name'), nullable=False)
+    type2 = db.Column(db.String(20), db.ForeignKey('type.name'))
     is_base_form = db.Column(db.Boolean, default=True)
     add_date = db.Column(db.Date, default=date.today)
+    abilities = db.relationship('AbilityList', secondary=Pokemon_Ability.__table__, back_populates='pokemon_species')
+    moves = db.relationship('MoveList', secondary=Pokemon_Move.__table__, back_populates='pokemon_species')
+    instances = db.relationship('PokemonInstance', back_populates='species', lazy=True)
     
     def __repr__(self):
         return f"<PokemonSpecies {self.name}>"
-
-
+    
 class AbilityList(db.Model):
     """List of available Pokemon abilities."""
     id = db.Column(db.String(20), primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     description = db.Column(db.String(255))
     add_date = db.Column(db.Date, default=date.today)
+    pokemon_species = db.relationship('PokemonSpecies', secondary=Pokemon_Ability.__table__, back_populates='abilities')
+    pokemon_instances = db.relationship('PokemonInstance', back_populates='ability', lazy=True)
     
     def __repr__(self):
         return f"<AbilityList {self.name}>"
-
-
-class Pokemon_Ability(db.Model):
-    """Many-to-many relationship between Pokemon species and abilities."""
-    __tablename__ = 'pokemon_ability'
-    species_id = db.Column(db.String(20), db.ForeignKey('pokemon_species.id'), primary_key=True)
-    ability_id = db.Column(db.String(20), db.ForeignKey('ability_list.id'), primary_key=True)
-    add_date = db.Column(db.Date, default=date.today)
-    
-    def __repr__(self):
-        return f"<Pokemon_Ability {self.species_id} - {self.ability_id}>"
 
 
 class MoveList(db.Model):
@@ -55,20 +98,10 @@ class MoveList(db.Model):
     description = db.Column(db.String(255))
     power_points = db.Column(db.Integer)
     add_date = db.Column(db.Date, default=date.today)
+    pokemon_species = db.relationship('PokemonSpecies', secondary=Pokemon_Move.__table__, back_populates='moves')
     
     def __repr__(self):
         return f"<MoveList {self.name}>"
-
-
-class Pokemon_Move(db.Model):
-    """Many-to-many relationship between Pokemon species and moves."""
-    __tablename__ = 'pokemon_move'
-    species_id = db.Column(db.String(20), db.ForeignKey('pokemon_species.id'), primary_key=True)
-    move_id = db.Column(db.String(20), db.ForeignKey('move_list.id'), primary_key=True)
-    add_date = db.Column(db.Date, default=date.today)
-    
-    def __repr__(self):
-        return f"<Pokemon_Move {self.species_id} - {self.move_id}>"
 
 
 class Trainer(db.Model):
@@ -78,6 +111,9 @@ class Trainer(db.Model):
     victory_points = db.Column(db.Integer, default=0)
     battle_tickets = db.Column(db.Integer, default=0)
     join_date = db.Column(db.Date, default=date.today)
+    held_items = db.relationship('HeldItem', secondary=Trainer_HeldItem.__table__, back_populates='trainers')
+    pokemon_instances = db.relationship('PokemonInstance', back_populates='trainer', lazy=True)
+    teams = db.relationship('Team', back_populates='trainer', lazy=True)
     
     def __repr__(self):
         return f"<Trainer {self.name}>"
@@ -89,19 +125,12 @@ class HeldItem(db.Model):
     name = db.Column(db.String(50), nullable=False)
     description = db.Column(db.String(255))
     add_date = db.Column(db.Date, default=date.today)
+    trainers = db.relationship('Trainer', secondary=Trainer_HeldItem.__table__, back_populates='held_items')
+    teams = db.relationship('Team', back_populates='item', lazy=True)
     
     def __repr__(self):
         return f"<HeldItem {self.name}>"
 
-
-class Trainer_HeldItem(db.Model):
-    """Many-to-many relationship between trainers and held items."""
-    trainer_id = db.Column(db.String(20), db.ForeignKey('trainer.id'), primary_key=True)
-    item_id = db.Column(db.String(20), db.ForeignKey('held_item.id'), primary_key=True)
-    obtain_date = db.Column(db.Date, default=date.today)
-    
-    def __repr__(self):
-        return f"<Trainer_HeldItem {self.trainer_id} - {self.item_id}>"
 
 
 class PokemonInstance(db.Model):
@@ -115,14 +144,23 @@ class PokemonInstance(db.Model):
     special_attack_ev = db.Column(db.Integer, default=0)
     special_defense_ev = db.Column(db.Integer, default=0)
     speed_ev = db.Column(db.Integer, default=0)
-    nature = db.Column(db.String(50))
+    nature_id = db.Column(db.String(50), db.ForeignKey('nature.id'))
     ability_id = db.Column(db.String(50), db.ForeignKey('ability_list.id'))
-    move_1 = db.Column(db.String(50), db.ForeignKey('move_list.id'))
-    move_2 = db.Column(db.String(50), db.ForeignKey('move_list.id'))
-    move_3 = db.Column(db.String(50), db.ForeignKey('move_list.id'))
-    move_4 = db.Column(db.String(50), db.ForeignKey('move_list.id'))
+    move1_id = db.Column(db.String(50), db.ForeignKey('move_list.id'))
+    move2_id = db.Column(db.String(50), db.ForeignKey('move_list.id'))
+    move3_id = db.Column(db.String(50), db.ForeignKey('move_list.id'))
+    move4_id = db.Column(db.String(50), db.ForeignKey('move_list.id'))
     source = db.Column(db.String(20))
-    
+    species = db.relationship('PokemonSpecies', back_populates='instances')
+    trainer = db.relationship('Trainer', back_populates='pokemon_instances')
+    teams = db.relationship('Team', back_populates='pokemon', lazy=True)
+    move1 = db.relationship('MoveList', foreign_keys=[move1_id])
+    move2 = db.relationship('MoveList', foreign_keys=[move2_id])
+    move3 = db.relationship('MoveList', foreign_keys=[move3_id])
+    move4 = db.relationship('MoveList', foreign_keys=[move4_id])
+    nature = db.relationship('Nature', back_populates='instances')
+    ability = db.relationship('AbilityList', back_populates='pokemon_instances')
+
     def __repr__(self):
         return f"<PokemonInstance {self.instance_id}>"
 
@@ -136,6 +174,9 @@ class Team(db.Model):
     pokemon_id = db.Column(db.String(20), db.ForeignKey('pokemon_instance.id'))
     item_id = db.Column(db.String(20), db.ForeignKey('held_item.id'))
     last_updated = db.Column(db.Date, default=date.today)
+    trainer = db.relationship('Trainer', back_populates='teams')
+    pokemon = db.relationship('PokemonInstance', back_populates='teams')
+    item = db.relationship('HeldItem', back_populates='teams')
     
     def __repr__(self):
         return f"<Team {self.trainer_id} - Slot {self.team_slot}>"
