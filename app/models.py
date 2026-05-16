@@ -31,6 +31,26 @@ class Pokemon_Move(db.Model):
     
     def __repr__(self):
         return f"<Pokemon_Move {self.species_id} - {self.move_id}>"
+    
+class Nature(db.Model):
+    """List of Pokemon natures with their stat effects."""
+    id = db.Column(db.String(20), primary_key=True)
+    name = db.Column(db.String(50), nullable=False)
+    increased_stat = db.Column(db.String(20))
+    decreased_stat = db.Column(db.String(20))
+    add_date = db.Column(db.Date, default=date.today)
+    instances = db.relationship('PokemonInstance', back_populates='nature', lazy=True)
+    
+    def __repr__(self):
+        return f"<Nature {self.name}>"
+    
+class Type(db.Model):
+    """List of Pokemon types with their strengths and weaknesses."""
+    name = db.Column(db.String(50), primary_key=True)
+    add_date = db.Column(db.Date, default=date.today)
+    
+    def __repr__(self):
+        return f"<Type {self.name}>"
 
 class PokemonSpecies(db.Model):
     """Base Pokemon species table with stats and type information."""
@@ -43,8 +63,8 @@ class PokemonSpecies(db.Model):
     special_attack = db.Column(db.Integer, nullable=False)
     special_defense = db.Column(db.Integer, nullable=False)
     speed = db.Column(db.Integer, nullable=False)
-    type_1 = db.Column(db.String(10))
-    type_2 = db.Column(db.String(10))
+    type1 = db.Column(db.String(20), db.ForeignKey('type.name'), nullable=False)
+    type2 = db.Column(db.String(20), db.ForeignKey('type.name'))
     is_base_form = db.Column(db.Boolean, default=True)
     add_date = db.Column(db.Date, default=date.today)
     abilities = db.relationship('AbilityList', secondary=Pokemon_Ability.__table__, back_populates='pokemon_species')
@@ -61,6 +81,7 @@ class AbilityList(db.Model):
     description = db.Column(db.String(255))
     add_date = db.Column(db.Date, default=date.today)
     pokemon_species = db.relationship('PokemonSpecies', secondary=Pokemon_Ability.__table__, back_populates='abilities')
+    pokemon_instances = db.relationship('PokemonInstance', back_populates='ability', lazy=True)
     
     def __repr__(self):
         return f"<AbilityList {self.name}>"
@@ -123,7 +144,7 @@ class PokemonInstance(db.Model):
     special_attack_ev = db.Column(db.Integer, default=0)
     special_defense_ev = db.Column(db.Integer, default=0)
     speed_ev = db.Column(db.Integer, default=0)
-    nature = db.Column(db.String(50))
+    nature_id = db.Column(db.String(50), db.ForeignKey('nature.id'))
     ability_id = db.Column(db.String(50), db.ForeignKey('ability_list.id'))
     move1_id = db.Column(db.String(50), db.ForeignKey('move_list.id'))
     move2_id = db.Column(db.String(50), db.ForeignKey('move_list.id'))
@@ -137,6 +158,8 @@ class PokemonInstance(db.Model):
     move2 = db.relationship('MoveList', foreign_keys=[move2_id])
     move3 = db.relationship('MoveList', foreign_keys=[move3_id])
     move4 = db.relationship('MoveList', foreign_keys=[move4_id])
+    nature = db.relationship('Nature', back_populates='instances')
+    ability = db.relationship('AbilityList', back_populates='pokemon_instances')
 
     def __repr__(self):
         return f"<PokemonInstance {self.instance_id}>"
