@@ -1,31 +1,59 @@
 {% extends "base.html" %}
 
-{% block title %}Home | Stack Outline App{% endblock %}
+{% block title %}Home | Pokémon Champions{% endblock %}
 
 {% block content %}
-<section class="mb-4">
-  <h1 class="h3">Pokemon Champions</h1>
-  <p class="text-muted mb-0">
-    Select a user to view and modify their account and pokemon teams
-  </p>
+<!-- Hero Welcome Section -->
+<header class="hero-section">
+  <div class="hero-overlay">
+    <h1 class="champions-title">Pokémon Champions</h1>
+    <p class="hero-subtitle">
+      Select a master trainer to view data, modify accounts, and manage elite teams.
+    </p>
+  </div>
+</header>
+
+<!-- Quick Stats Dashboard -->
+<section class="stats-container">
+  <div class="stat-card">
+    <div class="stat-icon icon-trainer"></div>
+    <div class="stat-info">
+      <span class="stat-value">{{ trainerCount }}</span>
+      <span class="stat-label">Active Trainers</span>
+    </div>
+  </div>
+  
+  <div class="stat-card">
+    <div class="stat-icon icon-pokemon"></div>
+    <div class="stat-info">
+      <span class="stat-value">{{ pokemonCount }}</span>
+      <span class="stat-label">Species Discovered</span>
+    </div>
+  </div>
 </section>
 
-<section class="mb-4">
-  <h2 class="h5">Statistics</h2>
-  <p class="text-muted mb-0">Total Trainers: {{ trainerCount }}</p>
-  <p class="text-muted mb-0">Total Pokemon Species: {{ pokemonCount }}</p>
-</section>
-
-<section>
-  <h2 class="h5">Example Trainers</h2>
+<!-- Trainer Selection Area -->
+<section class="trainer-selection">
+  <h2 class="section-heading">Example Trainers</h2>
+  
   {% if trainers %}
-    <ul class="list-group">
+    <div class="trainer-grid">
       {% for trainer in trainers %}
-        <li class="list-group-item" onclick="location.href='/user/{{ trainer.id }}'">{{ trainer.name }}</li>
+        <div class="trainer-card" onclick="location.href='/user/{{ trainer.id }}'">
+          <div class="trainer-card-accent"></div>
+          <div class="trainer-avatar">
+            <!-- Decorative character placeholder graphic -->
+            <span class="avatar-initial">{{ trainer.name[0] | upper }}</span>
+          </div>
+          <h3 class="trainer-name">{{ trainer.name }}</h3>
+          <span class="view-profile-btn">View Profile</span>
+        </div>
       {% endfor %}
-    </ul>
+    </div>
   {% else %}
-    <div class="alert alert-info mb-0">No trainers yet. Add some through the Flask shell or extend routes with a form/API.</div>
+    <div class="empty-state-alert">
+      <p class="alert-text">No trainers registered in the league yet.</p>
+    </div>
   {% endif %}
 </section>
 {% endblock %}

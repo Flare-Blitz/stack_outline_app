@@ -54,3 +54,10 @@
   Prompt: "If a pokemon only learns 1 ability, such as how Palafin only learns Zero to Hero, or how Mega Charizard Y only learns Drought, then they should only have 1 ability. Pokemon that aren't a base form should not have their own instance, as the instance will be based off of the base form. Also, Palafin zero form is the pokemon's base form."
   AI Output: Fixed ability assignments for single-ability Pokemon (removed duplicate abilities for Palafin and Mega Charizard Y), corrected is_base_form flag for Palafin Zero (set to True), and removed instances for non-base forms (variants) since instances should only exist for base forms.
   My Modification: Corrected seed.py to properly handle abilities and base form instances.
+
+  Tool: Google Gemini
+  Date: 2026-05-15
+  Prompt: "If I have a Trainer table and Item table in Flask, with a helper table in between, where they each have a trainers and items variable, how can I query all items that are not owned by a specific trainer?"
+  AI Output: Provided an example where a subquery is generated and used to filter the item list by querying the items
+  that already exist
+  My Modification: Modified the class names, and changed the query type to accomodate for my existing variables.
