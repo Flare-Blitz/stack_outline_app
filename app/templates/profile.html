@@ -1,73 +1,199 @@
-<button onclick="location.href='/'">Return to Home</button>
-<div>
-    <p>{{trainer.name}}</p>
-    <p>{{trainer.victory_points}}</p>
-    <p>{{trainer.battle_tickets}}</p>
+{% extends "base.html" %}
+
+{% block title %}{{ trainer.name }}'s Profile | Pokémon Champions{% endblock %}
+
+{% block content %}
+<!-- Back Navigation -->
+<div class="mb-4">
+  <a href="{{ url_for('main.index') }}" class="back-league-btn">
+    <span class="back-arrow">←</span> Registry Dashboard
+  </a>
 </div>
 
-<div>
-    <div>Pokemon List</div>
-    <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Move 1</th>
-                <th>Move 2</th>
-                <th>Move 3</th>
-                <th>Move 4</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for pokemon in trainer.pokemon_instances %}
+<div class="profile-layout-grid">
+  
+  <!-- LEFT COLUMN: Trainer Pass & Inventory Info -->
+  <aside class="trainer-identity-sidebar">
+    <div class="identity-card-accent"></div>
+    <div class="profile-avatar-large">
+      <span class="avatar-text-large">{{ trainer.name[0] | upper }}</span>
+    </div>
+    
+    <h1 class="profile-trainer-name">{{ trainer.name }}</h1>
+    <p class="profile-trainer-rank">League Competitor</p>
+    
+    <hr class="profile-divider">
+    
+    <!-- Currencies / Stats Balances -->
+    <div class="trainer-meta-details">
+      <div class="meta-row">
+        <span class="meta-label">🏆 Victory Points:</span>
+        <span class="meta-value value-highlight">{{ trainer.victory_points }}</span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-label">🎟️ Battle Tickets:</span>
+        <span class="meta-value value-highlight-gold">{{ trainer.battle_tickets }}</span>
+      </div>
+    </div>
+
+    <!-- Squad Selection Control Panel -->
+    <div class="squad-management-panel mt-4">
+      <h3 class="panel-subheading">Active Battle Teams</h3>
+      <div class="squad-btn-grid">
+        {% for letter in ['A', 'B', 'C', 'D', 'E', 'F'] %}
+          <button onclick="location.href='{{ trainer.id }}/editTeam/{{ letter }}'" class="squad-select-btn">
+            Team {{ letter }}
+          </button>
+        {% endfor %}
+      </div>
+    </div>
+  </aside>
+
+  <!-- RIGHT COLUMN: Interactive Combat Roster & Vault -->
+  <section class="roster-stage-area">
+
+    <!-- Section: Held Items Inventory Vault -->
+    <div class="items-vault-section mb-5">
+      <div class="vault-header d-flex justify-content-between align-items-center mb-3">
+        <h2 class="roster-heading mb-0">Current Held Items Vault</h2>
+        <button onclick="location.href='{{ trainer.id }}/itemList'" class="action-btn-gold-sm">
+          + Add Held Item
+        </button>
+      </div>
+
+      {% if trainer.held_items %}
+        <div class="arena-table-responsive">
+          <table class="arena-data-table">
+            <thead>
+              <tr>
+                <th>Item Name</th>
+                <th>Utility Effects / Description</th>
+                <th class="text-end">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in trainer.held_items %}
                 <tr>
-                    <td>{{ pokemon.species.name }}</td>
-                    <td>{{ pokemon.move1.name }}</td>
-                    <td>{{ pokemon.move2.name }}</td>
-                    <td>{{ pokemon.move3.name }}</td>
-                    <td>{{ pokemon.move4.name }}</td>
+                  <td class="item-highlight-cell font-weight-bold">{{ item.name }}</td>
+                  <td class="text-light">{{ item.description }}</td>
+                  <td class="text-end">
+                    <form action="/user/{{ trainer.id }}/itemList/deleteItem" method="post" class="d-inline">
+                      <input type="hidden" name="item_id" value="{{ item.id }}">
+                      <button type="submit" class="arena-delete-btn">Discard</button>
+                    </form>
+                  </td>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    {% for pokemon in trainer.pokemon_instances %}
-        
-    {% endfor %}
-</div>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <div class="empty-roster-fallback">
+          <p class="fallback-text text-center text-muted">The items vault is completely empty.</p>
+        </div>
+      {% endif %}
+    </div>
+    
+    <!-- Section: Pokémon Roster -->
+    <h2 class="roster-heading">Registered Pokémon Instances</h2>
+    {% if trainer.pokemon_instances %}
+      <div class="pokemon-roster-grid-advanced">
+        {% for pokemon in trainer.pokemon_instances %}
+          <div class="pokemon-instance-card">
+            <div class="instance-card-header align-items-start">
+              <div>
+                <h3 class="instance-species-name">{{ pokemon.species.name }}</h3>
+                <!-- ADDED: Displaying the missing ability assignment safely -->
+                <span class="instance-ability-text">
+                  ⚡ {{ pokemon.ability.name if pokemon.ability else "No Ability Assigned" }}
+                </span>
+              </div>
+              <span class="instance-nature-badge">{{ pokemon.nature.name if pokemon.nature else "Unknown" }} Nature</span>
+            </div>
+            
+            <!-- Moveset Sub-Grid layout -->
+            <div class="instance-moveset-box">
+              <span class="moveset-title">Moveset</span>
+              <div class="moves-grid">
+                <div class="move-slot">{{ pokemon.move1.name if pokemon.move1 else "—" }}</div>
+                <div class="move-slot">{{ pokemon.move2.name if pokemon.move2 else "—" }}</div>
+                <div class="move-slot">{{ pokemon.move3.name if pokemon.move3 else "—" }}</div>
+                <div class="move-slot">{{ pokemon.move4.name if pokemon.move4 else "—" }}</div>
+              </div>
+            </div>
 
-<div>
-    <h1>Current Held Items</h1>
-    <button onclick="location.href='{{ trainer.id }}/itemList'">Add Held Item</button>
-    <table>
-        <thead>
-            <tr>
-                <th>Item:</th>
-                <th>Description:</th>
-                <th>Delete</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in trainer.held_items %}
-                <tr>
-                    <td>{{ item.name }}</td>
-                    <td>{{ item.description }}</td>
-                    <td>
-                        <form action="/user/{{ trainer.id }}/itemList/deleteItem" method="post">
-                            <input type="hidden" name="item_id" value="{{ item.id }}">
-                            <button type="submit">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
+            <!-- REFACTORED: Effort Values with live 0-30 CSS Data Graphs -->
+            <div class="instance-ev-box">
+              <span class="ev-title">Effort Values (EVs)</span>
+              <div class="ev-graph-matrix">
+                
+                <!-- HP EV Graph Line -->
+                <div class="ev-graph-row">
+                  <span class="ev-graph-label">HP</span>
+                  <div class="ev-bar-track">
+                    <div class="ev-bar-fill fill-hp" style="--ev-val: {{ pokemon.hp_ev or 0 }};"></div>
+                  </div>
+                  <span class="ev-graph-numeric">{{ pokemon.hp_ev or 0 }}</span>
+                </div>
 
-<div>
-    <div>Edit Team</div>
-    <button onclick="location.href='{{ trainer.id }}/editTeam/A'">Edit Team A</button>
-    <button onclick="location.href='{{ trainer.id }}/editTeam/B'">Edit Team B</button>
-    <button onclick="location.href='{{ trainer.id }}/editTeam/C'">Edit Team C</button>
-    <button onclick="location.href='{{ trainer.id }}/editTeam/D'">Edit Team D</button>
-    <button onclick="location.href='{{ trainer.id }}/editTeam/E'">Edit Team E</button>
-    <button onclick="location.href='{{ trainer.id }}/editTeam/F'">Edit Team F</button>
+                <!-- Attack EV Graph Line -->
+                <div class="ev-graph-row">
+                  <span class="ev-graph-label">ATK</span>
+                  <div class="ev-bar-track">
+                    <div class="ev-bar-fill fill-atk" style="--ev-val: {{ pokemon.attack_ev or 0 }};"></div>
+                  </div>
+                  <span class="ev-graph-numeric">{{ pokemon.attack_ev or 0 }}</span>
+                </div>
+
+                <!-- Defense EV Graph Line -->
+                <div class="ev-graph-row">
+                  <span class="ev-graph-label">DEF</span>
+                  <div class="ev-bar-track">
+                    <div class="ev-bar-fill fill-def" style="--ev-val: {{ pokemon.defense_ev or 0 }};"></div>
+                  </div>
+                  <span class="ev-graph-numeric">{{ pokemon.defense_ev or 0 }}</span>
+                </div>
+
+                <!-- Special Attack EV Graph Line -->
+                <div class="ev-graph-row">
+                  <span class="ev-graph-label">SPA</span>
+                  <div class="ev-bar-track">
+                    <div class="ev-bar-fill fill-spa" style="--ev-val: {{ pokemon.special_attack_ev or 0 }};"></div>
+                  </div>
+                  <span class="ev-graph-numeric">{{ pokemon.special_attack_ev or 0 }}</span>
+                </div>
+
+                <!-- Special Defense EV Graph Line -->
+                <div class="ev-graph-row">
+                  <span class="ev-graph-label">SPD</span>
+                  <div class="ev-bar-track">
+                    <div class="ev-bar-fill fill-spd" style="--ev-val: {{ pokemon.special_defense_ev or 0 }};"></div>
+                  </div>
+                  <span class="ev-graph-numeric">{{ pokemon.special_defense_ev or 0 }}</span>
+                </div>
+
+                <!-- Speed EV Graph Line -->
+                <div class="ev-graph-row">
+                  <span class="ev-graph-label">SPE</span>
+                  <div class="ev-bar-track">
+                    <div class="ev-bar-fill fill-spe" style="--ev-val: {{ pokemon.speed_ev or 0 }};"></div>
+                  </div>
+                  <span class="ev-graph-numeric">{{ pokemon.speed_ev or 0 }}</span>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty-roster-fallback mb-5">
+        <p class="fallback-text">No Pokémon instances currently generated for this trainer profile.</p>
+      </div>
+    {% endif %}
+
+    
+
+  </section>
 </div>
+{% endblock %}

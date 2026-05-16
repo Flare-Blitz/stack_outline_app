@@ -1,24 +1,58 @@
-<button onclick="location.href='/user/{{ trainer_id }}'">Return to Profile</button>
-<div>
-    <h1>Items to buy</h1>
-    <form action="/user/{{ trainer_id }}/itemList/addItem" method="post">
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Buy</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in items %}
-                    <tr>
-                        <td>{{ item.name }}</td>
-                        <td>{{ item.description }}</td>
-                        <td><button type="submit" name="item_id" value="{{ item.id }}">Buy</button></td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </form>
+{% extends "base.html" %}
+
+{% block title %}League Market | Pokémon Champions{% endblock %}
+
+{% block content %}
+<!-- Back Navigation -->
+<div class="mb-4">
+  <a href="/user/{{ trainer_id }}" class="back-league-btn">
+    <span class="back-arrow">←</span> Cancel & Return to Profile
+  </a>
 </div>
+
+<!-- Shop Header Banner -->
+<header class="market-header mb-5">
+  <div class="market-title-group">
+    <h1 class="market-title">League Item Market</h1>
+    <p class="market-subtitle">Equip your team with championship-grade held items.</p>
+  </div>
+</header>
+
+<!-- Main Items Inventory Grid -->
+<section class="market-showcase">
+  {% if items %}
+    <div class="market-grid">
+      {% for item in items %}
+        <div class="market-item-card">
+          <div class="item-card-glow"></div>
+          
+          <!-- Decorative Item Capsule Graphic Anchor -->
+          <div class="item-sprite-box">
+            <span class="item-sphere">📦</span>
+          </div>
+
+          <div class="item-details">
+            <h3 class="item-name-tag">{{ item.name }}</h3>
+            <p class="item-desc-text">{{ item.description if item.description else "No official league database documentation found for this modification device." }}</p>
+          </div>
+
+          <!-- Checkout Form Isolation Module -->
+          <div class="item-purchase-action">
+            <form action="/user/{{ trainer_id }}/itemList/addItem" method="post" class="w-100">
+              <button type="submit" name="item_id" value="{{ item.id }}" class="market-buy-btn">
+                Acquire Item
+              </button>
+            </form>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="empty-roster-fallback">
+      <div class="fallback-icon">🏪</div>
+      <h3 class="fallback-title">Market Out of Stock</h3>
+      <p class="fallback-text">There are currently no elite held items registered in the global league directory for purchase.</p>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}
