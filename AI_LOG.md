@@ -61,3 +61,15 @@
   AI Output: Provided an example where a subquery is generated and used to filter the item list by querying the items
   that already exist
   My Modification: Modified the class names, and changed the query type to accomodate for my existing variables.
+
+  Tool: Google Gemini
+  Date: 2026-05-15
+  Prompt: "I am creating a site that will store pokemon data for users, based on the game Pokemon champions. I am going to give you the html for a page, and you are going to refactor the U.I. for the page, while keeping the data and links the same. I'm using Flask for the pages, and the site pages should be flashy with css being intoduced in a separate css file. The primary colors should be red and gold. the file is index.html"
+  AI Output: Revamped the html and provided code for an updated css file.
+  My Modification: Verified all code still functions, and adjusted a few colors to improve clarity.
+
+  Tool: Google Gemini
+  Date: 2026-05-15
+  Prompt: "Looks great, now use a similar styling to refactor base.html. Reutilize any css classes from index.html. Show me what new css classes are added."
+  AI Output: Created the base header, and modified the base so the background is now black, creating a dark theme
+  My Modification: Verified all code still functions. Edited the text to better reflect my project. words like "League Home" don't really fit when my application is called "Champions". edited css class names to better reflect my project, like "hero-section" was changed to "user-section"

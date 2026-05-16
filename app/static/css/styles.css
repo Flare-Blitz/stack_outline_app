@@ -11,8 +11,8 @@
     --text-dark: #333;
 }
 
-/* --- Hero Header --- */
-.hero-section {
+/* --- user Header --- */
+.user-section {
     background: linear-gradient(135deg, var(--dark-red) 0%, var(--bg-dark) 100%);
     border-left: 5px solid var(--gold);
     padding: 2.5rem 2rem;
@@ -31,7 +31,7 @@
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
 }
 
-.hero-subtitle {
+.user-subtitle {
     color: var(--text-light);
     font-size: 1.1rem;
     font-weight: 300;
@@ -73,7 +73,7 @@
 
 /* --- Trainer Selection Grid --- */
 .section-heading {
-    color: var(--text-dark);
+    color: var(--text-light);
     font-size: 1.5rem;
     margin-bottom: 1.5rem;
     position: relative;
@@ -189,4 +189,89 @@
 
 .alert-subtext {
     color: var(--text-muted);
+}
+
+/* --- Global Body Overrides --- */
+.site-body {
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- Premium Arena Navbar --- */
+.arena-navbar {
+    background-color: #0a0a0c;
+    border-bottom: 2px solid var(--gold);
+    padding: 1rem 0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.arena-brand {
+    font-weight: 900;
+    font-size: 1.4rem;
+    letter-spacing: 1.5px;
+    color: var(--text-light) !important;
+    text-transform: uppercase;
+    transition: text-shadow 0.2s ease;
+}
+
+.arena-brand:hover {
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+}
+
+.brand-accent {
+    color: var(--primary-red);
+}
+
+/* --- Navigation Links --- */
+.arena-link {
+    color: var(--text-muted) !important;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    padding: 0.5rem 1rem !important;
+    transition: color 0.2s ease, border-color 0.2s ease;
+    border-bottom: 2px solid transparent;
+}
+
+.arena-link:hover, 
+.arena-link.active {
+    color: var(--gold) !important;
+    border-bottom: 2px solid var(--primary-red);
+}
+
+/* --- Mobile Menu Responsive Adjustments --- */
+.custom-toggler {
+    border-color: rgba(255, 215, 0, 0.2) !important;
+}
+
+.custom-toggler:focus {
+    box-shadow: 0 0 0 0.25rem rgba(204, 0, 0, 0.25) !important;
+}
+
+.custom-toggler .navbar-toggler-icon {
+    /* Converts the hamburger icon lines to look gold */
+    filter: invert(84%) sepia(79%) saturate(417%) hue-rotate(354deg) brightness(107%) contrast(104%);
+}
+
+/* --- Structural Content Stage --- */
+.stage-container {
+    flex: 1; /* Pushes footer elements down if content is short */
+    animation: fadeInPage 0.4s ease-in-out;
+}
+
+/* Smooth page load effect */
+@keyframes fadeInPage {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
