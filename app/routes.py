@@ -13,7 +13,10 @@ main = Blueprint("main", __name__)
 @main.route("/")
 def index():
     trainers = Trainer.query.order_by(Trainer.id.desc()).all()
-    return render_template("index.html", trainers=trainers)
+
+    trainerCount = Trainer.query.count()
+    pokemonCount = PokemonSpecies.query.count()
+    return render_template("index.html", trainers=trainers, trainerCount=trainerCount, pokemonCount=pokemonCount)
 
 @main.route("/user/<string:trainer_id>")
 def user(trainer_id):
